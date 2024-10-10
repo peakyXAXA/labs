@@ -1,0 +1,49 @@
+import random
+n = int(input())
+K = int(input())
+matrixA = [[random.randint(-10,10) for j in range(n)] for i in range(n)]
+
+print("Матрица A:")
+for row in matrixA:
+    print(row)
+print()
+
+summa_v_oblasti_3 = 0
+for i in range(n // 2):
+    for j in range(i):
+        if (j % 2 == 1) and (matrixA[i][j] > K):
+            summa_v_oblasti_3 += matrixA[i][j]
+
+proizvedenie_v_oblasti_2 = 1
+for i in range(n // 2):
+    for j in range(i + 1,n):
+        proizvedenie_v_oblasti_2 *= matrixA[i][j]
+
+
+matrixF = [row[:] for row in matrixA]
+
+if summa_v_oblasti_3 > proizvedenie_v_oblasti_2:
+    for i in range(n // 2):
+        for j in range(i + 1):
+            matrixF[i][j], matrixF[i][n - j - 1] = matrixF[i][n - j - 1], matrixF[i][j]
+else:
+    for i in range(n // 2, n):
+        for j in range(i, n):
+            matrixF[i][j], matrixF[n - i - 1][j] = matrixF[n- i - 1][j], matrixF[i][j]
+
+print("Матрица F:")
+for row in matrixF:
+    print(row)
+print()
+
+virazhenie = [[0] * n for _ in range(n)]
+
+matrixF_Tr = [[matrixF[j][i] for j in range(n)] for i in range(n)]
+
+for i in range(n):
+    for j in range(n):
+        virazhenie[i][j] = (K * matrixA[i][j]) * matrixF[i][j] + K * matrixF_Tr[i][j]
+
+print("Значение выражения:")
+for row in virazhenie:
+    print(row)
